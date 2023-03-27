@@ -1,18 +1,23 @@
 import "./css.css";
-import { Modal } from "./modal";
 
 import { useState } from "react";
-// import {useState,useEffect } from "react";
+
+// import { modalDevitoria } from "./exibirVitoria";
+import { ModalDevitoria } from "./modalDevitoria";
 
 function App() {
   const tabuleiroVazio = ["", "", "", "", "", "", "", "", ""];
   const [tabuleiro, setTabuleiro] = useState(tabuleiroVazio);
   const [jogada, setJogada] = useState("X");
   const [resultado, setResultado] = useState("");
-  const [modal, setModal] = useState(false);
+  const [exibirVitoria, setexibirVitoria] = useState(false);
 
   function jogar(lugar: any) {
     const tabuleiroAnterior = tabuleiro;
+
+    if(exibirVitoria === true){
+      return 0
+    }
 
     if (jogada === "X") {
       if (tabuleiroAnterior[lugar] === "") {
@@ -135,23 +140,21 @@ function App() {
 
   function reiniciarPartida(){
     setTabuleiro(tabuleiroVazio)
-    setModal(false)
+    setexibirVitoria(false)
     setJogada("X")
   }
 
   function finalizarPartida(){
-    setModal(true)
+    setexibirVitoria(true)
   }
 
   return (
     <section>
       <div className="textAjusting1">
-        <h1>Jogo Da Velha</h1>
+        <b className="titulo">Jogo Da Velha</b>
       </div>
       
       <main className="conteinerHeader">
-
-      {modal && <Modal setJogada={setJogada} setTabuleiro={setTabuleiro} resultado={resultado} setModal={setModal}></Modal> }
 
         <div className="Header">
           {tabuleiro.map((iten, index) => (
@@ -167,7 +170,7 @@ function App() {
                 onClick={() => {
                   jogar(index);
                 }}
-                className="span"
+                className={iten}
               >
                 {iten}
               </span>
@@ -175,8 +178,9 @@ function App() {
           ))}
         </div>
       </main>
+      {exibirVitoria && <ModalDevitoria resultado2={resultado}></ModalDevitoria> }
       <div className="textAjusting1">
-        <button className="btnReiniciar" onClick={()=>{reiniciarPartida()}}>Reiniciar</button>
+        <button className="btnReiniciar" onClick={()=>{reiniciarPartida()}}>Reiniciar jogo</button>
       </div>
 
     </section>
